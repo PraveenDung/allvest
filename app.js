@@ -1,9 +1,9 @@
 //Load environment variables from .env file
 require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -15,6 +15,8 @@ app.use(cors());
 app.get("/", (req, res) => {
     res.send("Running");
 });
+
+app.use('/auth', authRoutes);
 
 //Connect to MongoDB using Mongoose
 mongoose.connect(process.env.MONGO_URI)
