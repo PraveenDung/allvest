@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const authRoutes = require('./routes/authRoutes');
 const secureRoutes = require('./routes/secureRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/api/secure', secureRoutes);
+app.use('/payment', paymentRoutes);
 
 //Connect to MongoDB using Mongoose
 mongoose.connect(process.env.MONGO_URI)
