@@ -1,5 +1,6 @@
 const Company = require("../models/Company");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
+const validatePaymentSession = require('../utils/validatePaymentSession');
 
 //Stripe requires raw body for webhook signature verification
 exports.handleStripeWebhook = async (req, res) => {
@@ -17,6 +18,11 @@ exports.handleStripeWebhook = async (req, res) => {
 
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
+
+        // Validate session before using it
+        if (!validatePaymentSession(session)) {
+            return res.status(400).send('Invalid session data');
+        }
 
         const companyId = session.metadata.companyId;
         const quantity = parseInt(session.metadata.quantity);
