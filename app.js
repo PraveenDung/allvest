@@ -7,8 +7,14 @@ const authRoutes = require('./routes/authRoutes');
 const secureRoutes = require('./routes/secureRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const companyRoutes = require('./routes/companyRoutes');
+const bodyParser = require('body-parser');
+const webhookRoutes = require('./routes/webhookRoutes');
 
 const app = express();
+
+// Must come BEFORE express.json()
+app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
+app.use('/webhook', webhookRoutes);
 
 //Middleware to parse JSON bodies and allow cross origin requests
 app.use(express.json());
